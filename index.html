@@ -169,6 +169,7 @@ img.photo{object-fit:cover}
 .marker.bad{background:var(--red)}
 .marker.filled{background:var(--green-d); cursor:default}
 .mtag{position:absolute; left:50%; top:46px; transform:translateX(-50%); background:#fff; color:var(--green-d); border:2px solid var(--green); border-radius:999px; padding:3px 12px; font-weight:800; white-space:nowrap; font-size:.82rem; z-index:5; box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.mright .mtag{transform:translateX(-85%)}
 /* --- screen 5: hotel word lists --- */
 .toolbar{display:flex; gap:10px; margin:12px 0; flex-wrap:wrap}
 .hidebtn{border:2px solid var(--purple); color:var(--purple); background:#fff; border-radius:999px; padding:10px 20px; font-weight:800; min-height:46px; display:inline-flex; align-items:center; gap:10px}
@@ -182,10 +183,10 @@ img.photo{object-fit:cover}
 .trklabel{font-size:.85rem; color:var(--soft); font-weight:700}
 .act{font-size:.92rem; color:var(--green-d); font-weight:700; background:var(--green-l); border-radius:10px; padding:8px 12px; margin-top:10px}
 /* --- screen 9: practice --- */
-.maskpatch{position:absolute; width:50px; height:50px; border-radius:50%; transform:translate(-50%,-50%); pointer-events:none; z-index:3; background:radial-gradient(circle, var(--mc) 56%, transparent 74%)}
 #exLabel .marker{background:#fff; color:var(--purple); border:2px solid var(--purple); box-shadow:0 2px 8px rgba(0,0,0,.28)}
 #exLabel .marker.sel{background:var(--purple); color:#fff}
 #exLabel .marker.filled{background:var(--green-d); border-color:var(--green-d); color:#fff}
+.deluxeimg{width:100%; height:auto; display:block; border-radius:var(--rad); box-shadow:var(--sh); background:#fff}
 .colpair{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:10px}
 .col{display:flex; flex-direction:column; gap:8px}
 .col .chip{justify-content:flex-start}
@@ -196,7 +197,7 @@ img.photo{object-fit:cover}
 .solution{margin-top:12px; background:var(--green-l); border:1px solid var(--green); border-radius:12px; padding:12px 16px}
 .solution b{color:var(--green-d)}
 .continuebtn{margin-top:10px; border:none; background:var(--green); color:#fff; font-weight:900; border-radius:999px; padding:10px 24px; min-height:44px; box-shadow:0 4px 10px rgba(14,159,110,.3)}
-.kimimg{width:100%; display:block; border-radius:var(--rad); box-shadow:var(--sh); filter:blur(18px) saturate(.9); transform:scale(1.03); transition:filter .9s ease, transform .9s ease}
+.kimimg{filter:blur(18px) saturate(.9); transform:scale(1.03); transition:filter .9s ease, transform .9s ease}
 .kimimg.revealed{filter:none; transform:none}
 .kimcap{font-weight:800; color:var(--green-d); text-align:center; margin-top:8px}
 @media (max-width:720px){
@@ -215,8 +216,76 @@ img.photo{object-fit:cover}
 </head>
 <body>
 
-<!-- ============ SVG SCENE LIBRARY (flat cartoon coursebook style; also automatic fallbacks if teacher image files are missing) ============ -->
+<!-- ============ SVG SCENE LIBRARY (coursebook style; also automatic fallbacks if teacher image files are missing) ============ -->
 <svg style="display:none" aria-hidden="true">
+<defs>
+  <linearGradient id="gWall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b9b3c0"/><stop offset="1" stop-color="#8f8898"/></linearGradient>
+  <linearGradient id="gWallR" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a88fb5"/><stop offset="1" stop-color="#8a6f96"/></linearGradient>
+  <linearGradient id="gFloor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9a9aa2"/><stop offset="1" stop-color="#6f6f78"/></linearGradient>
+  <linearGradient id="gWood" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6b4a2c"/><stop offset="1" stop-color="#4a3018"/></linearGradient>
+  <linearGradient id="gWoodL" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a6f57"/><stop offset="1" stop-color="#6d5643"/></linearGradient>
+  <linearGradient id="gDuvet" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a6bbf"/><stop offset="1" stop-color="#5f4590"/></linearGradient>
+  <linearGradient id="gWhite" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#dfe3e8"/></linearGradient>
+  <linearGradient id="gShade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6e0"/><stop offset="1" stop-color="#e8d9b8"/></linearGradient>
+  <linearGradient id="gTile" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4f6f8"/><stop offset="1" stop-color="#dfe4e8"/></linearGradient>
+  <linearGradient id="gRug" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9c3a0"/><stop offset="1" stop-color="#b99a72"/></linearGradient>
+  <radialGradient id="rGlow"><stop offset="0" stop-color="#ffe9b0" stop-opacity=".85"/><stop offset="1" stop-color="#ffe9b0" stop-opacity="0"/></radialGradient>
+</defs>
+<symbol id="sc-deluxe" viewBox="0 0 1456 984">
+  <rect width="1456" height="620" fill="url(#gWall)"/>
+  <rect x="1000" width="456" height="620" fill="url(#gWallR)"/>
+  <rect y="600" width="1456" height="384" fill="url(#gFloor)"/>
+  <rect y="598" width="1456" height="14" fill="#e8e6ee"/>
+  <rect x="856" y="88" width="120" height="150" rx="4" fill="#6d4a2f"/>
+  <rect x="866" y="98" width="100" height="130" fill="#fdf6ea"/>
+  <circle cx="916" cy="146" r="22" fill="#f6a5c0"/><circle cx="916" cy="146" r="8" fill="#f2b04a"/>
+  <path d="M916 168v40M916 176q-14-6-20 6M916 176q14-6 20 6" stroke="#5e9455" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <rect x="651" width="4" height="42" fill="#555"/>
+  <rect x="590" y="40" width="126" height="76" rx="20" fill="url(#gShade)"/>
+  <path d="M600 60h106M600 80h106M600 100h106" stroke="#d8c9a8" stroke-width="3"/>
+  <circle cx="653" cy="86" r="110" fill="url(#rGlow)" opacity=".45"/>
+  <rect x="352" y="96" width="300" height="520" rx="6" fill="#eceae6"/>
+  <rect x="368" y="112" width="268" height="488" fill="url(#gTile)"/>
+  <path d="M435 112v488M502 112v488M569 112v488M368 190h268M368 268h268M368 346h268" stroke="#ffffff" stroke-width="3" opacity=".7"/>
+  <rect x="368" y="470" width="268" height="130" fill="#b9c0c6"/>
+  <path d="M400 176q26-6 43 18" stroke="#cfd6db" stroke-width="8" fill="none" stroke-linecap="round"/>
+  <ellipse cx="443" cy="207" rx="26" ry="9" fill="#cfd6db"/>
+  <path d="M428 216v150M438 216v158M448 216v150M458 216v142" stroke="#bfe0ef" stroke-width="4" opacity=".8" stroke-linecap="round"/>
+  <rect x="470" y="262" width="130" height="7" rx="3.5" fill="#cfd6db"/>
+  <rect x="474" y="262" width="6" height="16" fill="#aeb6bd"/><rect x="590" y="262" width="6" height="16" fill="#aeb6bd"/>
+  <rect x="520" y="268" width="70" height="86" rx="8" fill="#7fb069"/>
+  <path d="M520 296h70M520 322h70" stroke="#5e9455" stroke-width="4"/>
+  <rect x="368" y="386" width="198" height="14" rx="7" fill="#ffffff"/>
+  <rect x="372" y="392" width="190" height="110" rx="10" fill="url(#gWhite)"/>
+  <rect x="376" y="502" width="182" height="40" fill="#e8ecef"/>
+  <rect x="566" y="430" width="54" height="42" rx="7" fill="url(#gWhite)"/>
+  <path d="M566 472h54q4 26-14 34h-26q-18-8-14-34z" fill="url(#gWhite)"/>
+  <rect x="580" y="506" width="26" height="42" fill="#e8ecef"/>
+  <rect x="735" y="520" width="90" height="92" rx="6" fill="url(#gWoodL)"/>
+  <rect x="775" y="468" width="8" height="52" fill="#8a6f57"/>
+  <path d="M752 455h54l-8-40h-38z" fill="url(#gShade)"/>
+  <circle cx="779" cy="452" r="70" fill="url(#rGlow)" opacity=".5"/>
+  <rect x="880" y="420" width="100" height="340" rx="10" fill="url(#gWood)"/>
+  <ellipse cx="680" cy="885" rx="215" ry="16" fill="#000" opacity=".12"/>
+  <rect x="470" y="700" width="420" height="180" rx="12" fill="url(#gWood)"/>
+  <rect x="470" y="560" width="420" height="160" rx="26" fill="url(#gDuvet)"/>
+  <path d="M480 610q100 26 200 6t200 10M480 660q110 24 210 4t190 12" stroke="#9d82cf" stroke-width="6" fill="none" opacity=".8"/>
+  <rect x="830" y="560" width="100" height="58" rx="14" fill="#ffffff"/>
+  <rect x="852" y="606" width="84" height="50" rx="12" fill="#8a6bbf"/>
+  <rect x="900" y="780" width="110" height="150" rx="8" fill="url(#gWoodL)"/>
+  <path d="M908 830h94M908 880h94" stroke="#5b4632" stroke-width="4"/>
+  <rect x="930" y="768" width="42" height="13" rx="4" fill="#333"/>
+  <ellipse cx="158" cy="665" rx="105" ry="14" fill="#000" opacity=".12"/>
+  <rect x="58" y="150" width="200" height="510" rx="8" fill="url(#gWood)"/>
+  <path d="M158 158v494" stroke="#3a2512" stroke-width="5"/>
+  <circle cx="148" cy="410" r="7" fill="#f2b04a"/><circle cx="168" cy="410" r="7" fill="#f2b04a"/>
+  <path d="M300 760h240l40 170H260z" fill="url(#gRug)"/>
+  <path d="M316 776h208l32 138H284z" fill="none" stroke="#e8d3b0" stroke-width="6"/>
+  <ellipse cx="160" cy="868" rx="105" ry="12" fill="#000" opacity=".12"/>
+  <rect x="60" y="700" width="200" height="26" rx="8" fill="url(#gWood)"/>
+  <rect x="74" y="726" width="12" height="132" fill="#4a3018"/><rect x="234" y="726" width="12" height="132" fill="#4a3018"/>
+  <circle cx="700" cy="330" r="330" fill="url(#rGlow)" opacity=".12"/>
+</symbol>
 <symbol id="sc-room" viewBox="0 0 400 260">
   <rect width="400" height="260" fill="#f3e9dc"/><rect y="196" width="400" height="64" fill="#d9c3a5"/>
   <path d="M0 200h400M0 220h400M0 240h400" stroke="#c8ae8a" stroke-width="2"/>
@@ -630,7 +699,7 @@ img.photo{object-fit:cover}
   </div>
 </section>
 
-<!-- ================= SCREEN 9 (NEW: Practice — four vocabulary exercises) ================= -->
+<!-- ================= SCREEN 9 (Practice — four vocabulary exercises) ================= -->
 <section class="screen">
   <span class="stage">Practice</span>
   <h1 class="scr-title">Practice: the deluxe double room</h1>
@@ -640,23 +709,20 @@ img.photo{object-fit:cover}
   <div class="exercise" data-type="match" data-items=".marker" id="exLabel">
     <p class="instr">1 · Label the picture. Tap a word, then tap its number — or tap a number, then the word.</p>
     <div class="photowrap">
-      <img src="assets/images/in_a_hotel_room.png" data-fb="#sc-room|0 0 400 260" alt="A hotel room: wardrobe, shower, ceiling light, towel, bath, lamp, duvet, pillows, bedside table, toilet, towel rail, rug and a flower painting.">
-      <div class="maskpatch" style="left:27%;top:68.4%;--mc:#84878d"></div>
-      <div class="maskpatch" style="left:11.2%;top:78.6%;--mc:#7b5233"></div>
-      <div class="maskpatch" style="left:35.7%;top:15.2%;--mc:#edeae5"></div>
-      <div class="mwrap" style="left:10.8%;top:31.2%"><button class="marker" data-answer="wardrobe" aria-label="Number 1"><span class="mnum">1</span><span class="mtag" hidden></span></button></div>
-      <div class="mwrap" style="left:30.4%;top:21%"><button class="marker" data-answer="shower" aria-label="Number 2"><span class="mnum">2</span><span class="mtag" hidden></span></button></div>
-      <div class="mwrap" style="left:44.8%;top:6.1%"><button class="marker" data-answer="ceilinglight" aria-label="Number 4"><span class="mnum">4</span><span class="mtag" hidden></span></button></div>
-      <div class="mwrap" style="left:38.2%;top:31.2%"><button class="marker" data-answer="towel" aria-label="Number 5"><span class="mnum">5</span><span class="mtag" hidden></span></button></div>
-      <div class="mwrap" style="left:29.5%;top:44.4%"><button class="marker" data-answer="bath" aria-label="Number 6"><span class="mnum">6</span><span class="mtag" hidden></span></button></div>
-      <div class="mwrap" style="left:53.5%;top:45.7%"><button class="marker" data-answer="lamp" aria-label="Number 7"><span class="mnum">7</span><span class="mtag" hidden></span></button></div>
-      <div class="mwrap" style="left:48.3%;top:60.7%"><button class="marker" data-answer="duvet" aria-label="Number 10"><span class="mnum">10</span><span class="mtag" hidden></span></button></div>
-      <div class="mwrap" style="left:63%;top:63.3%"><button class="marker" data-answer="pillow" aria-label="Number 11"><span class="mnum">11</span><span class="mtag" hidden></span></button></div>
-      <div class="mwrap" style="left:65.3%;top:86.7%"><button class="marker" data-answer="bedsidetable" aria-label="Number 12"><span class="mnum">12</span><span class="mtag" hidden></span></button></div>
-      <div class="mwrap" style="left:40.4%;top:48.8%"><button class="marker" data-answer="toilet" aria-label="Number 13"><span class="mnum">13</span><span class="mtag" hidden></span></button></div>
-      <div class="mwrap" style="left:34.5%;top:27%"><button class="marker" data-answer="towelrail" aria-label="Number 14"><span class="mnum">14</span><span class="mtag" hidden></span></button></div>
-      <div class="mwrap" style="left:27.5%;top:84.4%"><button class="marker" data-answer="rug" aria-label="Number 15"><span class="mnum">15</span><span class="mtag" hidden></span></button></div>
-      <div class="mwrap" style="left:62.8%;top:16.3%"><button class="marker" data-answer="painting" aria-label="Number 16"><span class="mnum">16</span><span class="mtag" hidden></span></button></div>
+      <img class="deluxeimg" src="assets/images/in_a_hotel_roomnn.png" data-fb="#sc-deluxe|0 0 1456 984" alt="A deluxe double hotel room: wardrobe, shower, ceiling light, towel, bath, lamp, duvet, pillows, bedside table, toilet, towel rail, rug and a flower painting.">
+      <div class="mwrap" style="left:16.6%;top:42.1%"><button class="marker" data-answer="wardrobe" aria-label="Number 1"><span class="mnum">1</span><span class="mtag" hidden></span></button></div>
+      <div class="mwrap" style="left:44.4%;top:24.2%"><button class="marker" data-answer="shower" aria-label="Number 2"><span class="mnum">2</span><span class="mtag" hidden></span></button></div>
+      <div class="mwrap" style="left:70.5%;top:9.9%"><button class="marker" data-answer="ceilinglight" aria-label="Number 4"><span class="mnum">4</span><span class="mtag" hidden></span></button></div>
+      <div class="mwrap" style="left:55.5%;top:30.6%"><button class="marker" data-answer="towel" aria-label="Number 5"><span class="mnum">5</span><span class="mtag" hidden></span></button></div>
+      <div class="mwrap" style="left:43.7%;top:45.9%"><button class="marker" data-answer="bath" aria-label="Number 6"><span class="mnum">6</span><span class="mtag" hidden></span></button></div>
+      <div class="mwrap" style="left:79.7%;top:46.9%"><button class="marker" data-answer="lamp" aria-label="Number 7"><span class="mnum">7</span><span class="mtag" hidden></span></button></div>
+      <div class="mwrap" style="left:66.4%;top:73.3%"><button class="marker" data-answer="duvet" aria-label="Number 10"><span class="mnum">10</span><span class="mtag" hidden></span></button></div>
+      <div class="mwrap mright" style="left:89.6%;top:67%"><button class="marker" data-answer="pillow" aria-label="Number 11"><span class="mnum">11</span><span class="mtag" hidden></span></button></div>
+      <div class="mwrap mright" style="left:92.2%;top:88%"><button class="marker" data-answer="bedsidetable" aria-label="Number 12"><span class="mnum">12</span><span class="mtag" hidden></span></button></div>
+      <div class="mwrap" style="left:57.9%;top:48.5%"><button class="marker" data-answer="toilet" aria-label="Number 13"><span class="mnum">13</span><span class="mtag" hidden></span></button></div>
+      <div class="mwrap" style="left:50.5%;top:26.5%"><button class="marker" data-answer="towelrail" aria-label="Number 14"><span class="mnum">14</span><span class="mtag" hidden></span></button></div>
+      <div class="mwrap" style="left:39.8%;top:84.2%"><button class="marker" data-answer="rug" aria-label="Number 15"><span class="mnum">15</span><span class="mtag" hidden></span></button></div>
+      <div class="mwrap mright" style="left:91.6%;top:17.2%"><button class="marker" data-answer="painting" aria-label="Number 16"><span class="mnum">16</span><span class="mtag" hidden></span></button></div>
     </div>
     <div class="chips" id="chipsLab"></div>
     <div class="exfoot"><button class="resetbtn">Reset</button><span class="result" role="status"></span></div>
@@ -682,7 +748,7 @@ img.photo{object-fit:cover}
     <div class="solution" id="sol3" hidden>
       <p><b>The solved text:</b></p>
       <p>Welcome to our Deluxe Double Room. Switch on the <b>lamp</b> beside the bed and sink into the soft purple <b>duvet</b>. Two fluffy <b>pillows</b> rest against the wooden headboard. In the en-suite bathroom, hang your <b>towel</b> on the heated <b>towel rail</b>, or take a quick <b>shower</b> instead of a long <b>bath</b>. All your clothes fit in the tall wooden <b>wardrobe</b>. Before you leave, admire the flower <b>painting</b> above the bed and wipe your feet on the soft <b>rug</b> by the door.</p>
-      <p style="margin-top:8px"><b>Now read it aloud</b> to your teacher. <button class="speak" data-say="Welcome to our Deluxe Double Room. Switch on the lamp beside the bed and sink into the soft purple duvet. Two fluffy pillows rest against the wooden headboard. In the en-suite bathroom, hang your towel on the heated towel rail, or take a quick shower instead of a long bath. All your clothes fit in the tall wooden wardrobe. Before you leave, admire the flower painting above the bed and wipe your feet on the soft rug by the door." style="width:32px;height:32px" aria-label="Hear the model text"><svg viewBox="0 0 24 24" style="width:16px"><path d="M3 10v4h4l5 5V5L7 10H3zm13.5 2a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button> <span class="soft" style="color:var(--soft);font-size:.85rem">(or listen to the model first)</span></p>
+      <p style="margin-top:8px"><b>Now read it aloud</b> to your teacher. <button class="speak" data-say="Welcome to our Deluxe Double Room. Switch on the lamp beside the bed and sink into the soft purple duvet. Two fluffy pillows rest against the wooden headboard. In the en-suite bathroom, hang your towel on the heated towel rail, or take a quick shower instead of a long bath. All your clothes fit in the tall wooden wardrobe. Before you leave, admire the flower painting above the bed and wipe your feet on the soft rug by the door." style="width:32px;height:32px" aria-label="Hear the model text"><svg viewBox="0 0 24 24" style="width:16px"><path d="M3 10v4h4l5 5V5L7 10H3zm13.5 2a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button> <span style="color:var(--soft);font-size:.85rem">(or listen to the model first)</span></p>
       <button class="continuebtn">Continue →</button>
     </div>
     <div class="exfoot"><button class="resetbtn">Reset</button><span class="result" role="status"></span></div>
@@ -691,7 +757,7 @@ img.photo{object-fit:cover}
   <!-- EX 4 : MEMORY CLOSER -->
   <div class="exercise" data-type="mcq" data-items=".item" data-revealimg="#kimimg">
     <p class="instr">4 · Memory challenge! The picture is blurred. Answer from memory — the picture comes back after question 5.</p>
-    <img id="kimimg" class="kimimg" src="assets/images/in_a_hotel_room.png" data-fb="#sc-room|0 0 400 260" alt="The hotel room picture, blurred for the memory game.">
+    <img id="kimimg" class="kimimg deluxeimg" src="assets/images/in_a_hotel_roomnn.png" data-fb="#sc-deluxe|0 0 1456 984" alt="The deluxe double hotel room picture, blurred for the memory game.">
     <p class="kimcap" hidden>Here is the room again — well done!</p>
     <div class="item"><p class="stem">1 Which item is green?</p><div class="opts"><button class="opt" data-correct="1">a towel</button><button class="opt">a duvet</button><button class="opt">a rug</button></div></div>
     <div class="item"><p class="stem">2 What hangs on the wall above the bed?</p><div class="opts"><button class="opt" data-correct="1">a painting</button><button class="opt">a mirror</button><button class="opt">a shelf</button></div></div>
@@ -841,18 +907,18 @@ const $$=(s,c=document)=>Array.from(c.querySelectorAll(s));
 const VOCAB={
 cupboard:{t:"a cupboard",ipa:"/ˈkʌbəd/",pos:"noun",def:"A tall piece of furniture with doors. You keep things inside it.",ex:["There is a big cupboard in the hotel room.","Put your bag in the cupboard."],ru:"шкаф"},
 shower:{t:"a shower",ipa:"/ˈʃaʊə(r)/",pos:"noun",def:"A place where you wash under falling water.",ex:["The bathroom has a shower and a bath.","I take a shower every morning."],ru:"душ"},
-bathroom:{t:"the bathroom",ipa:"/ˈbɑːθruːm/",pos:"noun",def:"A room with a bath or shower and a toilet.",ex:["There are clean towels in the bathroom."],ru:"ванная комната"},
+bathroom:{t:"the bathroom",ipa:"/ˈbɑθruːm/",pos:"noun",def:"A room with a bath or shower and a toilet.",ex:["There are clean towels in the bathroom."],ru:"ванная комната"},
 light:{t:"a light",ipa:"/laɪt/",pos:"noun",def:"A thing that gives light to a room.",ex:["There is a light on the ceiling.","Turn on the light, please."],ru:"свет, лампа"},
 towel:{t:"a towel",ipa:"/ˈtaʊəl/",pos:"noun",def:"A soft cloth you dry your body with.",ex:["There are two white towels on the bed."],ru:"полотенце"},
 bath:{t:"a bath",ipa:"/bɑːθ/",pos:"noun",def:"A long container with water, for washing your body.",ex:["The bathroom has a bath and a shower."],ru:"ванна"},
 lamp:{t:"a lamp",ipa:"/læmp/",pos:"noun",def:"A small light on a table or next to a bed.",ex:["There is a lamp next to the bed."],ru:"настольная лампа"},
 table:{t:"a table",ipa:"/ˈteɪbl/",pos:"noun",def:"A piece of furniture with a flat top and legs.",ex:["The remote control is on the table."],ru:"стол"},
-floor:{t:"the floor",ipa:"/flɔː/",pos:"noun",def:"1) the part of a room you walk on; 2) a level of a building.",ex:["There is a soft rug on the floor.","My room is on the second floor."],ru:"пол; этаж"},
+floor:{t:"the floor",ipa:"/flɔ/",pos:"noun",def:"1) the part of a room you walk on; 2) a level of a building.",ex:["There is a soft rug on the floor.","My room is on the second floor."],ru:"пол; этаж"},
 bed:{t:"a bed",ipa:"/bed/",pos:"noun",def:"The furniture you sleep on.",ex:["There are six pillows on the bed."],ru:"кровать"},
 pillow:{t:"a pillow",ipa:"/ˈpɪləʊ/",pos:"noun",def:"The soft thing under your head in bed.",ex:["You put your head on the pillow.","Two fluffy pillows rest against the headboard."],ru:"подушка"},
 window:{t:"a window",ipa:"/ˈwɪndəʊ/",pos:"noun",def:"An opening in a wall with glass. It lets light in and you can look out of it.",ex:["There are two windows in the bedroom.","What can you see from your window?"],ru:"окно"},
 remote:{t:"a remote control",ipa:"/rɪməʊt kəntrəʊl/",pos:"noun",def:"The small thing you point at the TV to change channels.",ex:["Where is the remote control?"],ru:"пульт (дистанционного управления)"},
-wardrobe:{t:"a wardrobe",ipa:"/ˈwɔːdrəʊb/",pos:"noun",def:"A tall piece of furniture you hang clothes in.",ex:["All your clothes fit in the tall wooden wardrobe."],ru:"шкаф для одежды"},
+wardrobe:{t:"a wardrobe",ipa:"/ˈwɔːdrəb/",pos:"noun",def:"A tall piece of furniture you hang clothes in.",ex:["All your clothes fit in the tall wooden wardrobe."],ru:"шкаф для одежды"},
 ceilinglight:{t:"a ceiling light",ipa:"/ˈsiːlɪŋ laɪt/",pos:"noun",def:"The light on the ceiling of a room.",ex:["Switch on the ceiling light, please."],ru:"потолочный светильник"},
 duvet:{t:"a duvet",ipa:"/ˈduːveɪ/",pos:"noun",def:"The soft, thick cover on a bed, filled with feathers or soft material.",ex:["The duvet on the bed is purple."],ru:"пуховое одеяло"},
 bedsidetable:{t:"a bedside table",ipa:"/ˈbedsaɪd ˌteɪbl/",pos:"noun",def:"The small table next to a bed.",ex:["There is a lamp on the bedside table."],ru:"прикроватная тумбочка"},
@@ -860,28 +926,28 @@ toilet:{t:"a toilet",ipa:"/ˈtɔɪlət/",pos:"noun",def:"The bathroom thing you 
 towelrail:{t:"a towel rail",ipa:"/ˈtaʊəl reɪl/",pos:"noun",def:"A metal bar on the bathroom wall for hanging towels.",ex:["Hang your towel on the heated towel rail."],ru:"полотенцесушитель, перекладина для полотенца"},
 rug:{t:"a rug",ipa:"/rʌɡ/",pos:"noun",def:"A small piece of thick soft material for the floor (smaller than a carpet).",ex:["Wipe your feet on the soft rug by the door."],ru:"коврик"},
 painting:{t:"a painting",ipa:"/ˈpeɪntɪŋ/",pos:"noun",def:"A picture made with paint, often in a frame.",ex:["There is a flower painting above the bed."],ru:"картина"},
-carpet:{t:"a carpet",ipa:"/ˈkɑːpɪt/",pos:"noun",def:"Soft thick material that covers the whole floor of a room (a rug is only a small piece).",ex:["The carpet in the bedroom is grey."],ru:"ковёр, ковролин"},
+carpet:{t:"a carpet",ipa:"/ˈkɑpɪt/",pos:"noun",def:"Soft thick material that covers the whole floor of a room (a rug is only a small piece).",ex:["The carpet in the bedroom is grey."],ru:"ковёр, ковролин"},
 blanket:{t:"a blanket",ipa:"/ˈblæŋkɪt/",pos:"noun",def:"A warm cover of wool or cotton that you put on a bed.",ex:["In winter we sleep under a thick blanket."],ru:"одеяло"},
 pool:{t:"a swimming pool",ipa:"/ˈswɪmɪŋ puːl/",pos:"noun",def:"A big container of water for swimming.",ex:["The swimming pool is on the roof."],ru:"(плавательный) бассейн"},
 spa:{t:"a spa",ipa:"/spɑː/",pos:"noun",def:"A place in a hotel where you relax and have water treatments.",ex:["There is a spa with a round pool."],ru:"спа"},
 toilets:{t:"toilets",ipa:"/ˈtɔɪləts/",pos:"noun (pl.)",def:"Rooms with toilets in a public place.",ex:["The toilets are next to the restaurant."],ru:"туалеты"},
-restaurant:{t:"a restaurant",ipa:"/ˈrestrɒnt/",pos:"noun",def:"A place where you can eat meals.",ex:["The restaurant is on the second floor."],ru:"ресторан"},
+restaurant:{t:"a restaurant",ipa:"/ˈrestrnt/",pos:"noun",def:"A place where you can eat meals.",ex:["The restaurant is on the second floor."],ru:"ресторан"},
 bar:{t:"a bar",ipa:"/bɑː/",pos:"noun",def:"A place where you can buy drinks.",ex:["There is a bar with round tables."],ru:"бар"},
 lift:{t:"a lift",ipa:"/lɪft/",pos:"noun",def:"A machine that takes you up and down in a building.",ex:["Take the lift to the fifth floor."],ru:"лифт"},
 gym:{t:"a gym",ipa:"/dʒɪm/",pos:"noun",def:"A room with machines for exercise.",ex:["There are treadmills in the gym."],ru:"тренажёрный зал"},
 giftshop:{t:"a gift shop",ipa:"/ˈɡɪft ʃɒp/",pos:"noun",def:"A small shop in a hotel for souvenirs.",ex:["You can buy postcards in the gift shop."],ru:"сувенирный магазин"},
-reception:{t:"reception",ipa:"/rɪˈsepʃn/",pos:"noun",def:"The place where you arrive at a hotel and get your key.",ex:["Ask for your key at reception."],ru:"стойка регистрации, ресепшен"},
-garden:{t:"a garden",ipa:"/ˈɡɑdn/",pos:"noun",def:"A piece of land with plants and trees.",ex:["There is a small garden in front of the hotel."],ru:"сад"},
-carpark:{t:"a car park",ipa:"/ˈkɑ pɑːk/",pos:"noun",def:"A place where you can leave your car.",ex:["Is there a car park near the hotel?"],ru:"парковка, автостоянка"},
+reception:{t:"reception",ipa:"/rɪsepʃn/",pos:"noun",def:"The place where you arrive at a hotel and get your key.",ex:["Ask for your key at reception."],ru:"стойка регистрации, ресепшен"},
+garden:{t:"a garden",ipa:"/ˈɡɑːdn/",pos:"noun",def:"A piece of land with plants and trees.",ex:["There is a small garden in front of the hotel."],ru:"сад"},
+carpark:{t:"a car park",ipa:"/ˈkɑː pɑːk/",pos:"noun",def:"A place where you can leave your car.",ex:["Is there a car park near the hotel?"],ru:"парковка, автостоянка"},
 groundfloor:{t:"the ground floor",ipa:"/ˈɡraʊnd flɔː/",pos:"noun",def:"The floor of a building at street level.",ex:["Reception is on the ground floor."],ru:"первый этаж"},
 view:{t:"a view",ipa:"/vjuː/",pos:"noun",def:"What you can see from a window or from a place.",ex:["There is a lovely view of the lake."],ru:"вид"},
 lake:{t:"a lake",ipa:"/leɪk/",pos:"noun",def:"A big area of water with land around it.",ex:["Loch Ness is a very big lake in Scotland."],ru:"озеро"},
 loch:{t:"a loch",ipa:"/lɒx/",pos:"noun",def:"The Scottish word for a lake.",ex:["Loch Ness is the most famous loch in Scotland."],ru:"лох (шотландское озеро)"},
 coast:{t:"the coast",ipa:"/kəʊst/",pos:"noun",def:"The land next to the sea.",ex:["Scotland has 10,000 km of coast."],ru:"побережье"},
 island:{t:"an island",ipa:"/ˈaɪlənd/",pos:"noun",def:"A piece of land with water all around it.",ex:["Scotland has 790 islands."],ru:"остров"},
-destination:{t:"a destination",ipa:"/ˌdestɪˈneɪn/",pos:"noun",def:"The place people travel to.",ex:["Scotland is a top tourist destination."],ru:"место назначения (поездки)"},
+destination:{t:"a destination",ipa:"/ˌdestɪˈneɪʃn/",pos:"noun",def:"The place people travel to.",ex:["Scotland is a top tourist destination."],ru:"место назначения (поездки)"},
 daytrip:{t:"a day trip",ipa:"/ˈdeɪ trɪp/",pos:"noun",def:"A short visit to a place for one day.",ex:["Loch Ness is perfect for day trips."],ru:"поездка на один день"},
-boattrip:{t:"a boat trip",ipa:"/bəʊt trp/",pos:"noun",def:"A journey in a boat for pleasure.",ex:["You can take a boat trip on the loch."],ru:"прогулка на лодке / катере"},
+boattrip:{t:"a boat trip",ipa:"/bəʊt trɪp/",pos:"noun",def:"A journey in a boat for pleasure.",ex:["You can take a boat trip on the loch."],ru:"прогулка на лодке / катере"},
 bank:{t:"a bank",ipa:"/bæŋk/",pos:"noun",def:"The land along the side of a lake or river.",ex:["Urquhart Castle is on the banks of the loch."],ru:"берег (реки, озера)"},
 accommodation:{t:"accommodation",ipa:"/əˌkɒməˈdeɪʃn/",pos:"noun",def:"A place where you can stay: a hotel, a house, a room.",ex:["The Craigdarroch Hotel is comfortable accommodation near Loch Ness."],ru:"жильё, размещение"},
 wouldlike:{t:"would like",ipa:"/wʊd laɪk/",pos:"phrase",def:"A polite way to say ‘want’.",ex:["Would you like to go to Scotland?","I’d like to see the castle."],ru:"хотел(а) бы"},
